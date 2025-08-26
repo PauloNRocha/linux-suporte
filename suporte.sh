@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================================
-# SUPORTE LINUX - Ferramenta de diagnóstico (MVP v0.1)
+# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2)
 # Autor: Paulo Rocha
 # Licença: MIT
 # ==========================================================
@@ -9,8 +9,11 @@
 
 teste_ping() {
     read -p "Digite o host para testar: " host
+    # Remove http:// ou https:// se o usuário digitar
+    host=$(echo "$host" | sed 's~http[s]*://~~')
+
     echo ">>> Testando conectividade com $host..."
-    ping -c 4 "$host"
+    ping -c 4 "$host" || echo "Falha no ping para $host"
     echo
     echo ">>> Testando conectividade com DNS do Google IPv4..."
     ping -c 4 8.8.8.8
@@ -21,15 +24,26 @@ teste_ping() {
 
 teste_traceroute() {
     read -p "Digite o host para traceroute: " host
+    host=$(echo "$host" | sed 's~http[s]*://~~')
+
+    if ! command -v traceroute &>/dev/null; then
+        echo ">>> O comando 'traceroute' não está instalado."
+        echo ">>> Instale com: sudo apt install traceroute"
+        return
+    fi
+
     echo ">>> Rastreando rota até $host..."
     traceroute "$host"
 }
 
 info_sistema() {
     echo ">>> Informações de Hardware"
-    echo "CPU: $(lscpu | grep 'Model name' | sed 's/Model name:\s*//')"
+    cpu=$(lscpu | grep -E 'Model name|Nome do modelo' | sed 's/.*:\s*//')
+    echo "CPU: ${cpu:-Não foi possível detectar}"
+    echo
     echo "Memória RAM:"
     free -h
+    echo
     echo "Disco rígido:"
     df -h --total | grep total
 }
@@ -46,7 +60,7 @@ info_rede() {
 while true; do
     clear
     echo "======================================"
-    echo "     SUPORTE LINUX - Ferramenta v0.1"
+    echo "     SUPORTE LINUX - Ferramenta v0.2"
     echo "======================================"
     echo "Escolha uma opção:"
     echo "1) Teste de Ping"
