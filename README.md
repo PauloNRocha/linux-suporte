@@ -14,6 +14,7 @@ Clone o repositório:
 git clone https://github.com/PauloNRocha/linux-suporte.git
 cd suporte-linux
 chmod +x suporte.sh
+```
 
 ## 🛠️ Uso
 Execute o script:
