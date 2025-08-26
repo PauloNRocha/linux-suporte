@@ -19,6 +19,7 @@ chmod +x suporte.sh
 Execute o script:
 ```bash
 ./suporte.sh
+```
 
 📜 Licença
 
