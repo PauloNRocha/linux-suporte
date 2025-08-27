@@ -43,7 +43,6 @@ A ideia é reunir em um único script testes úteis e informações relevantes, 
 
 - Manter o código simples e bem comentado.
 - Garantir compatibilidade com múltiplas distros.
-- Documentar mudanças no CHANGELOG.md.
 - Sugerir melhorias que tragam valor real para quem usa no dia a dia.
 
 ## Padrões de codificação
