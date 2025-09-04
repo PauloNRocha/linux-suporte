@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==========================================================
-# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.1)
+# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.2)
 # Autor: Paulo Rocha
 # Licença: MIT
 # ==========================================================
@@ -35,14 +35,39 @@ teste_ping() {
         return
     fi
 
-    echo ">>> Testando conectividade com $host..."
-    ping -c 4 "$host" || echo "Falha no ping para $host"
+    echo "Escolha o protocolo para o teste de ping:"
+    echo "1) IPv4"
+    echo "2) IPv6"
+    echo "3) Ambos"
+    read -p "Opção: " proto
+
+    case $proto in
+        1)
+            echo ">>> Testando conectividade IPv4 com $host..."
+            ping -4 -c 4 "$host" || echo "Falha no ping IPv4 para $host"
+            ;;
+        2)
+            echo ">>> Testando conectividade IPv6 com $host..."
+            ping -6 -c 4 "$host" || echo "Falha no ping IPv6 para $host"
+            ;;
+        3)
+            echo ">>> Testando conectividade IPv4 com $host..."
+            ping -4 -c 4 "$host" || echo "Falha no ping IPv4 para $host"
+            echo
+            echo ">>> Testando conectividade IPv6 com $host..."
+            ping -6 -c 4 "$host" || echo "Falha no ping IPv6 para $host"
+            ;;
+        *)
+            echo "Opção inválida!"
+            ;;
+    esac
+
     echo
     echo ">>> Testando conectividade com DNS do Google IPv4..."
-    ping -c 4 8.8.8.8
+    ping -4 -c 4 8.8.8.8
     echo
     echo ">>> Testando conectividade com DNS do Google IPv6..."
-    ping6 -c 4 2001:4860:4860::8888
+    ping -6 -c 4 2001:4860:4860::8888
 }
 
 teste_traceroute() {
@@ -60,8 +85,32 @@ teste_traceroute() {
         return
     fi
 
-    echo ">>> Rastreando rota até $host..."
-    traceroute "$host"
+    echo "Escolha o protocolo para o traceroute:"
+    echo "1) IPv4"
+    echo "2) IPv6"
+    echo "3) Ambos"
+    read -p "Opção: " proto
+
+    case $proto in
+        1)
+            echo ">>> Rastreando rota IPv4 até $host..."
+            traceroute -4 "$host"
+            ;;
+        2)
+            echo ">>> Rastreando rota IPv6 até $host..."
+            traceroute -6 "$host"
+            ;;
+        3)
+            echo ">>> Rastreando rota IPv4 até $host..."
+            traceroute -4 "$host"
+            echo
+            echo ">>> Rastreando rota IPv6 até $host..."
+            traceroute -6 "$host"
+            ;;
+        *)
+            echo "Opção inválida!"
+            ;;
+    esac
 }
 
 info_sistema() {
@@ -88,7 +137,7 @@ info_rede() {
 while true; do
     clear
     echo "======================================"
-    echo "   SUPORTE LINUX - Ferramenta v0.2.1"
+    echo "   SUPORTE LINUX - Ferramenta v0.2.2"
     echo "======================================"
     echo "Escolha uma opção:"
     echo "1) Teste de Ping"
