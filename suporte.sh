@@ -1,16 +1,39 @@
 #!/bin/bash
 # ==========================================================
-# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2)
+# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.1)
 # Autor: Paulo Rocha
 # Licença: MIT
 # ==========================================================
 
 # Funções ---------------------------------------------
 
+extrair_host() {
+    entrada="$1"
+
+    # Se for URL (http ou https), extrai apenas o domínio
+    if [[ "$entrada" =~ ^https?:// ]]; then
+        host=$(echo "$entrada" | sed -E 's#https?://([^/]+).*#\1#')
+    else
+        # Remove caminho (/algo) e fragmentos (#algo)
+        host=$(echo "$entrada" | sed -E 's#[/|#].*##')
+    fi
+
+    # Verifica se sobrou algo válido
+    if [[ -z "$host" ]]; then
+        echo ""
+    else
+        echo "$host"
+    fi
+}
+
 teste_ping() {
-    read -p "Digite o host para testar: " host
-    # Remove http:// ou https:// se o usuário digitar
-    host=$(echo "$host" | sed 's~http[s]*://~~')
+    read -p "Digite o host para testar: " entrada
+    host=$(extrair_host "$entrada")
+
+    if [[ -z "$host" ]]; then
+        echo "Entrada inválida. Digite apenas domínio ou IP."
+        return
+    fi
 
     echo ">>> Testando conectividade com $host..."
     ping -c 4 "$host" || echo "Falha no ping para $host"
@@ -23,8 +46,13 @@ teste_ping() {
 }
 
 teste_traceroute() {
-    read -p "Digite o host para traceroute: " host
-    host=$(echo "$host" | sed 's~http[s]*://~~')
+    read -p "Digite o host para traceroute: " entrada
+    host=$(extrair_host "$entrada")
+
+    if [[ -z "$host" ]]; then
+        echo "Entrada inválida. Digite apenas domínio ou IP."
+        return
+    fi
 
     if ! command -v traceroute &>/dev/null; then
         echo ">>> O comando 'traceroute' não está instalado."
@@ -60,7 +88,7 @@ info_rede() {
 while true; do
     clear
     echo "======================================"
-    echo "     SUPORTE LINUX - Ferramenta v0.2"
+    echo "   SUPORTE LINUX - Ferramenta v0.2.1"
     echo "======================================"
     echo "Escolha uma opção:"
     echo "1) Teste de Ping"
