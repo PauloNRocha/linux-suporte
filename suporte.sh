@@ -90,13 +90,20 @@ teste_ping() {
     return 1
   fi
 
-  echo "Escolha o protocolo para o teste de ping:"
-  echo "1) IPv4"
-  echo "2) IPv6"
-  echo "3) Ambos"
-  read -r -p "Opção: " proto
+  local proto
+  while true; do
+    echo "Escolha o protocolo para o teste de ping:"
+    echo "1) IPv4"
+    echo "2) IPv6"
+    echo "3) Ambos"
+    read -r -p "Protocolo (1-3): " proto
+    case "$proto" in
+      1|2|3) break ;;
+      *) warn "Opção inválida!" ;;
+    esac
+  done
 
-  case $proto in
+  case "$proto" in
     1)
       echo ">>> Testando conectividade IPv4 com $host..."
       if ! ping -4 -c 4 "$host"; then warn "Falha no ping IPv4 para $host"; fi
@@ -147,13 +154,20 @@ teste_traceroute() {
     return 1
   fi
 
-  echo "Escolha o protocolo para o traceroute:"
-  echo "1) IPv4"
-  echo "2) IPv6"
-  echo "3) Ambos"
-  read -r -p "Opção: " proto
+  local proto
+  while true; do
+    echo "Escolha o protocolo para o traceroute:"
+    echo "1) IPv4"
+    echo "2) IPv6"
+    echo "3) Ambos"
+    read -r -p "Protocolo (1-3): " proto
+    case "$proto" in
+      1|2|3) break ;;
+      *) warn "Opção inválida!" ;;
+    esac
+  done
 
-  case $proto in
+  case "$proto" in
     1)
       echo ">>> Rastreando rota IPv4 até $host..."
       _run_trace -4 "$host"
@@ -250,4 +264,3 @@ while true; do
   echo
   read -r -p "Pressione ENTER para voltar ao menu..." _pause || true
 done
-
