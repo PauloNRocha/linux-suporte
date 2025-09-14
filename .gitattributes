@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Ensure LF endings for scripts and docs (avoid CRLF on Windows)
+*.sh text eol=lf
+*.md text eol=lf
