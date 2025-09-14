@@ -1,25 +1,23 @@
 # Objetivo
 
-Essa é uma ferramenta prática para suporte técnico em sistemas Linux. A ferramenta tem o objetivo ser algo que realmente ajude os profissionais de TI a diagnosticar e resolver problemas de forma mais eficiente. Ela é projetada pra servir tanto a tecnicos de campo em provedores de internet quanto para usuarios e administradores de sistemas, que precisam de diagnósticos rápidos no dia a dia.
+Esta é uma ferramenta prática para suporte técnico em sistemas Linux. O objetivo é ajudar profissionais de TI a diagnosticar e resolver problemas de forma eficiente — útil tanto para técnicos de campo em provedores de internet quanto para usuários e administradores de sistemas.
 
-A ideia é reunir em um único script testes úteis e informações relevantes, sem complicação e sem precisar decorar comandos complexos. A ferramenta é focada em ser simples, direta e prática, ajudando a economizar tempo e esforço na resolução de problemas comuns.
+A ideia é reunir em um único script testes úteis e informações relevantes, sem complicação e sem precisar decorar comandos complexos. A ferramenta é simples, direta e prática, ajudando a economizar tempo na resolução de problemas comuns.
 
-## Principios
+## Princípios
 
-- **Simplicidade:** fácil de rodar, até para quem não é avançado.
-- **Clareza:** mostrar resultados limpos e objetivos, sem poluição visual.
-- **Compatibilidade:** funcionar no máximo de distribuições possível.
-- **Evolução aberta:** o código é colaborativo, qualquer um pode contribuir.
+- Simplicidade: fácil de rodar, até para quem não é avançado.
+- Clareza: mostrar resultados limpos e objetivos, sem poluição visual.
+- Compatibilidade: funcionar no máximo de distribuições possível.
+- Evolução aberta: o código é colaborativo e aberto a contribuições.
 
 ## Quem pode se beneficiar
 
-- Técnicos de suporte em provedores de internet.
-- Técnicos de campo em provedores de internet.
+- Técnicos de suporte e de campo em provedores de internet.
 - Administradores de sistemas iniciantes ou avançados.
 - Profissionais de TI que precisam de diagnósticos rápidos e eficientes.
-- Usuários Linux que querem uma “caixa de ferramentas” pronta para diagnósticos.
-- Quem precisa coletar informações rápidas para abrir um chamado ou passar para outra equipe.
-- Profissionais que desejam economizar tempo em tarefas repetitivas de diagnóstico.
+- Usuários Linux que querem uma "caixa de ferramentas" pronta para diagnósticos.
+- Quem precisa coletar informações rápidas para abrir um chamado.
 
 ## Funcionalidades atuais (v0.2)
 
@@ -43,7 +41,7 @@ A ideia é reunir em um único script testes úteis e informações relevantes, 
 
 - Manter o código simples e bem comentado.
 - Garantir compatibilidade com múltiplas distros.
-- Sugerir melhorias que tragam valor real para quem usa no dia a dia.
+- Sugerir melhorias com valor real para o dia a dia.
 
 ## Padrões de codificação
 
@@ -54,15 +52,15 @@ A ideia é reunir em um único script testes úteis e informações relevantes, 
 
 ## Bibliotecas e Ferramentas
 
-- Shell script puro (compatível com Bash).
+- Shell script (Bash).
 - Dependências externas mínimas:
-    - ping / ping6
-    - traceroute
-    - ip, df, free (presentes na maioria das distros Linux).
+  - ip, ping
+  - traceroute (ou tracepath)
+  - df, free
 
 ## Diretrizes de interface do usuário
 
 - Interface baseada em menus no terminal.
 - Saídas limpas, sem poluição visual.
-- Destaques visuais (✔, ✖, ℹ) para facilitar leitura.
+- Destaques visuais (sucesso/erro/alerta) para facilitar leitura.
 - Compatibilidade com terminais padrão (sem exigir recursos gráficos).
