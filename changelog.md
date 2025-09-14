@@ -2,6 +2,14 @@
 
 Todas as mudanças notáveis deste projeto serão documentadas aqui.
 
+## v0.2.4
+
+### Corrigido
+- Restaura o mini-menu de seleção de protocolo (IPv4, IPv6 ou ambos) nos testes de Ping e Traceroute, com leitura direta do TTY e validação da entrada (1-3). Corrige cenário em que o prompt de protocolo não aparecia e retornava ao menu principal.
+
+### Alterado
+- Padronização dos prompts interativos via função `ask()` que lê de `/dev/tty` quando disponível, aumentando a robustez em ambientes com STDIN redirecionado.
+
 ## v0.2.3
 
 Versão focada em robustez, mensagens claras e compatibilidade de ambiente (UTF-8/LF), além de pequenas melhorias de diagnóstico e usabilidade.
@@ -59,4 +67,3 @@ Versão focada em robustez, mensagens claras e compatibilidade de ambiente (UTF-
 - Traceroute.
 - Informações do sistema (CPU, RAM, disco).
 - Informações de rede (IP, gateway, DNS).
-

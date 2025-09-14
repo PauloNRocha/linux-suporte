@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ==========================================================
-# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.3)
+# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.4)
 # Autor: Paulo Rocha
 # Licença: MIT
 # ==========================================================
 
 set -Eeuo pipefail
-VERSION="0.2.3"
+VERSION="0.2.4"
 
 trap 'echo; echo "[!] Interrompido"; exit 130' INT TERM
 
@@ -38,6 +38,24 @@ require_cmd() {
 # ---------------------------------------------------------
 # Funções utilitárias
 # ---------------------------------------------------------
+
+# Leitura robusta de entrada, preferindo o TTY quando disponível
+ask() {
+  local prompt="$1"
+  local __var="$2"
+  local __input=""
+  if [[ -t 0 ]]; then
+    printf "%s" "$prompt"
+    IFS= read -r __input || true
+  elif [[ -r /dev/tty ]]; then
+    printf "%s" "$prompt" > /dev/tty
+    IFS= read -r __input < /dev/tty || true
+  else
+    printf "%s" "$prompt"
+    IFS= read -r __input || true
+  fi
+  printf -v "$__var" "%s" "$__input"
+}
 
 extrair_host() {
   # Extrai host de entradas como: url, domínio, IPv4, [IPv6], host:porta, url/caminho
@@ -81,7 +99,8 @@ extrair_host() {
 }
 
 teste_ping() {
-  read -r -p "Digite o host para testar: " entrada
+  local entrada
+  ask "Digite o host para testar: " entrada
   local host
   host=$(extrair_host "$entrada")
 
@@ -96,7 +115,7 @@ teste_ping() {
     echo "1) IPv4"
     echo "2) IPv6"
     echo "3) Ambos"
-    read -r -p "Protocolo (1-3): " proto
+    ask "Protocolo (1-3): " proto
     case "$proto" in
       1|2|3) break ;;
       *) warn "Opção inválida!" ;;
@@ -145,7 +164,8 @@ _run_trace() {
 }
 
 teste_traceroute() {
-  read -r -p "Digite o host para traceroute: " entrada
+  local entrada
+  ask "Digite o host para traceroute: " entrada
   local host
   host=$(extrair_host "$entrada")
 
@@ -160,7 +180,7 @@ teste_traceroute() {
     echo "1) IPv4"
     echo "2) IPv6"
     echo "3) Ambos"
-    read -r -p "Protocolo (1-3): " proto
+    ask "Protocolo (1-3): " proto
     case "$proto" in
       1|2|3) break ;;
       *) warn "Opção inválida!" ;;
@@ -250,7 +270,7 @@ while true; do
   echo "4) Informações de Rede"
   echo "0) Sair"
   echo "--------------------------------------"
-  read -r -p "Opção: " opt || { echo; exit 0; }
+  ask "Opção: " opt
 
   case $opt in
     1) teste_ping ;;

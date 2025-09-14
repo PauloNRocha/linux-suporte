@@ -2,7 +2,7 @@
 
 Ferramenta simples em Bash para auxiliar técnicos de suporte em sistemas Debian/Ubuntu.
 
-- Versão atual: `v0.2.3`
+- Versão atual: `v0.2.4`
 
 ## Funcionalidades (v0.2)
 - Teste de conectividade (ping IPv4/IPv6, host customizado)
