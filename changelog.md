@@ -2,6 +2,14 @@
 
 Todas as mudanças notáveis deste projeto serão documentadas aqui.
 
+## v0.2.5
+
+### Removido
+- Testes automáticos de ping para os DNS públicos do Google (IPv4 e IPv6) ao final do teste de Ping. Agora apenas o host solicitado é testado, tornando o fluxo mais direto.
+
+### Alterado
+- UX/UI: cabeçalhos de seção com destaque (`==>`) e cor; prompts mais claros; opção de saída também por `q`/`Q`; no seletor de protocolo, Enter aceita padrão “Ambos (3)”.
+
 ## v0.2.4
 
 ### Corrigido

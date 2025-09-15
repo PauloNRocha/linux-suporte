@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ==========================================================
-# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.4)
+# SUPORTE LINUX - Ferramenta de diagnóstico (v0.2.5)
 # Autor: Paulo Rocha
 # Licença: MIT
 # ==========================================================
 
 set -Eeuo pipefail
-VERSION="0.2.4"
+VERSION="0.2.5"
 
 trap 'echo; echo "[!] Interrompido"; exit 130' INT TERM
 
@@ -20,6 +20,7 @@ fi
 ok()   { echo -e "${C_GREEN}[OK]${C_RESET} $*"; }
 warn() { echo -e "${C_YELLOW}[!]${C_RESET} $*"; }
 err()  { echo -e "${C_RED}[X]${C_RESET} $*" 1>&2; }
+header() { echo -e "\n${C_BLUE}==>${C_RESET} $*"; }
 
 has_cmd() { command -v "$1" >/dev/null 2>&1; }
 
@@ -100,6 +101,7 @@ extrair_host() {
 
 teste_ping() {
   local entrada
+  header "Teste de Ping"
   ask "Digite o host para testar: " entrada
   local host
   host=$(extrair_host "$entrada")
@@ -111,11 +113,12 @@ teste_ping() {
 
   local proto
   while true; do
-    echo "Escolha o protocolo para o teste de ping:"
+    echo "Escolha o protocolo:"
     echo "1) IPv4"
     echo "2) IPv6"
-    echo "3) Ambos"
-    ask "Protocolo (1-3): " proto
+    echo "3) Ambos (padrão)"
+    ask "Protocolo (1-3) [3]: " proto
+    [[ -z "$proto" ]] && proto=3
     case "$proto" in
       1|2|3) break ;;
       *) warn "Opção inválida!" ;;
@@ -140,13 +143,7 @@ teste_ping() {
       err "Opção inválida!"; return 1
       ;;
   esac
-
-  echo
-  echo ">>> Testando conectividade com DNS do Google IPv4..."
-  ping -4 -c 4 8.8.8.8 || warn "Falha no ping IPv4 para 8.8.8.8"
-  echo
-  echo ">>> Testando conectividade com DNS do Google IPv6..."
-  ping -6 -c 4 2001:4860:4860::8888 || warn "Falha no ping IPv6 para 2001:4860:4860::8888"
+  ok "Teste de ping concluído."
 }
 
 _run_trace() {
@@ -165,6 +162,7 @@ _run_trace() {
 
 teste_traceroute() {
   local entrada
+  header "Teste de Traceroute"
   ask "Digite o host para traceroute: " entrada
   local host
   host=$(extrair_host "$entrada")
@@ -176,11 +174,12 @@ teste_traceroute() {
 
   local proto
   while true; do
-    echo "Escolha o protocolo para o traceroute:"
+    echo "Escolha o protocolo:"
     echo "1) IPv4"
     echo "2) IPv6"
-    echo "3) Ambos"
-    ask "Protocolo (1-3): " proto
+    echo "3) Ambos (padrão)"
+    ask "Protocolo (1-3) [3]: " proto
+    [[ -z "$proto" ]] && proto=3
     case "$proto" in
       1|2|3) break ;;
       *) warn "Opção inválida!" ;;
@@ -205,9 +204,11 @@ teste_traceroute() {
       err "Opção inválida!"; return 1
       ;;
   esac
+  ok "Traceroute concluído."
 }
 
 info_sistema() {
+  header "Informações do Sistema"
   echo ">>> Informações de Hardware"
   local cpu=""
   if has_cmd lscpu; then
@@ -226,7 +227,8 @@ info_sistema() {
 }
 
 info_rede() {
-  echo ">>> Informações de Rede"
+  header "Informações de Rede"
+  echo ">>> Endereços e Gateways"
   if has_cmd ip; then
     echo "Endereços IPv4:"
     ip -o -4 addr show | awk '{print $2 ": " $4}'
@@ -268,7 +270,7 @@ while true; do
   echo "2) Teste de Traceroute"
   echo "3) Informações do Sistema"
   echo "4) Informações de Rede"
-  echo "0) Sair"
+  echo "0) Sair    q) Sair"
   echo "--------------------------------------"
   ask "Opção: " opt
 
@@ -277,7 +279,7 @@ while true; do
     2) teste_traceroute ;;
     3) info_sistema ;;
     4) info_rede ;;
-    0) echo "Saindo..."; exit 0 ;;
+    0|q|Q) echo "Saindo..."; exit 0 ;;
     *) err "Opção inválida!" ;;
   esac
 
